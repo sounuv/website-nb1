@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { register } from "../actions/auth"
-import { BrandVideo } from "./brand-video"
+import { BrandSphere } from "./brand-sphere"
 
 export default function RegisterForm() {
   const [error, setError] = useState("")
@@ -31,7 +31,7 @@ export default function RegisterForm() {
   return (
     <div className="w-full max-w-[400px] space-y-6 p-4">
       <div className="text-center space-y-2">
-        <BrandVideo />
+        <BrandSphere />
         <h2 className="text-2xl font-semibold text-white">Create Account</h2>
         <p className="text-gray-400">Join and increase your productivity</p>
       </div>

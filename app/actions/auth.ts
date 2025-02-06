@@ -5,24 +5,32 @@
 // async function fetchUserData(email: string): Promise<UserData | null> is removed
 
 export async function login(formData: FormData) {
-  const username = formData.get("username")
+  const email = formData.get("email")
   const password = formData.get("password")
 
   try {
-    const response = await fetch("https://n8n-webhooks.bluenacional.com/webhook/37653958-a7cf-4daf-9d54-9696feb72ae8", {
+    const response = await fetch("https://n8n-webhooks.bluenacional.com/webhook/nb1/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
     })
 
-    const data = await response.json()
-
     if (response.ok) {
-      return { success: true, access_token: data.access_token }
+      const setCookieHeader = response.headers.get("Set-Cookie")
+      if (setCookieHeader) {
+        const tokenMatch = setCookieHeader.match(/authToken=([^;]+)/)
+        if (tokenMatch) {
+          const accessToken = tokenMatch[1]
+          return { success: true, access_token: accessToken }
+        }
+      }
+      return { success: false, error: "Failed to retrieve access token" }
     } else {
-      return { success: false, error: "User not found or incorrect password" }
+      const data = await response.json()
+      return { success: false, error: data.msg || "User not found or incorrect password" }
     }
   } catch (error) {
     return { success: false, error: "An error occurred. Please try again later." }

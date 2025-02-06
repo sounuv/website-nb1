@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, type React } from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { login } from "../actions/auth"
-import { BrandVideo } from "./brand-video"
+import { BrandSphere } from "./brand-sphere"
 
 export default function LoginForm() {
   const [error, setError] = useState("")
@@ -17,14 +17,18 @@ export default function LoginForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
+    console.log("Form data submitted:", formData)
     const result = await login(formData)
 
+    console.log("Login result:", result)
+
     if (!result.success) {
-      setError(result.error)
+      setError(result.error || "")
       setAttempts((prev) => prev + 1)
     } else {
-      // Store the access token
-      sessionStorage.setItem("access_token", result.access_token)
+      // Store the access token in cookies
+      document.cookie = `authToken=${result.access_token}; path=/; max-age=${7 * 24 * 60 * 60}; Secure; SameSite=Lax`
+      console.log("Redirecting to /dashboard")
       router.push("/dashboard")
     }
   }
@@ -34,7 +38,7 @@ export default function LoginForm() {
   return (
     <div className="w-full max-w-[400px] space-y-6 p-4">
       <div className="text-center space-y-2">
-        <BrandVideo />
+        <BrandSphere />
         <h2 className="text-2xl font-semibold text-white">Welcome</h2>
         <p className="text-gray-400">Your AI automation assistant</p>
       </div>
@@ -46,7 +50,7 @@ export default function LoginForm() {
           </Label>
           <Input
             id="email"
-            name="username"
+            name="email"
             type="email"
             required
             className="h-12 bg-[#1a1f36] border-[#2e3650] text-white placeholder:text-gray-500"

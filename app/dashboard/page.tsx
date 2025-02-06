@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { BrandVideo } from "../components/brand-video"
+import { BrandSphere } from "../components/brand-sphere"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
 import { ArrowUpRight } from "lucide-react"
@@ -11,7 +11,7 @@ export default function DashboardPage() {
   const router = useRouter()
 
   const handleSignOut = () => {
-    sessionStorage.removeItem("access_token")
+    document.cookie = "authToken=; path=/; max-age=0; Secure; SameSite=Lax"
     router.push("/")
   }
 
@@ -36,7 +36,7 @@ export default function DashboardPage() {
       <main className="flex flex-col items-center justify-center px-4 py-16">
         <h1 className="mb-8 text-4xl font-bold">Welcome</h1>
         <div className="mb-8">
-          <BrandVideo />
+          <BrandSphere />
         </div>
         <h2 className="mb-4 text-3xl font-bold">Welcome to Your Dashboard!</h2>
         <p className="mb-8 text-gray-400">Your automation assistant is ready to help</p>
