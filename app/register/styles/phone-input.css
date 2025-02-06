@@ -1,0 +1,81 @@
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 3rem;
+  background-color: #1a1f36;
+  border: 1px solid #2e3650;
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
+  position: relative;
+}
+
+.PhoneInputCountry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.PhoneInputCountryIcon {
+  width: 1.5rem;
+  height: 1rem;
+  border-radius: 2px;
+}
+
+.PhoneInputCountrySelect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 3rem;
+  z-index: 1;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.PhoneInputCountry:hover .PhoneInputCountrySelect {
+  pointer-events: auto;
+}
+
+.PhoneInputCountrySelectArrow {
+  display: block;
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+  border-width: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.PhoneInputInput {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  color: white;
+  outline: none;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.PhoneInputInput::placeholder {
+  color: #6b7280;
+}
+
+/* Hide the country select label but keep the select functional */
+.PhoneInputCountrySelectLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
