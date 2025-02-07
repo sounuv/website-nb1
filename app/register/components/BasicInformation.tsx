@@ -37,7 +37,7 @@ export function BasicInformation({ onNext }: BasicInformationProps) {
 
     try {
       const response = await fetch(
-        "https://n8n-webhooks.bluenacional.com/webhook/eff580c7-41bb-4d8a-ac9a-05b2eb19f6f1",
+        "https://n8n-webhooks.bluenacional.com/webhook/nb1/api/user/check",
         {
           method: "POST",
           headers: {
@@ -49,7 +49,7 @@ export function BasicInformation({ onNext }: BasicInformationProps) {
 
       const data = await response.json()
 
-      if (!data.sucesso) {
+      if (data.status) {
         setEmailVerified(false)
         toast.error(data.mensagem)
       } else {
