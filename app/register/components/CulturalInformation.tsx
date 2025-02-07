@@ -41,7 +41,7 @@ export function CulturalInformation({ onPrev }: CulturalInformationProps) {
 
     try {
       const response = await fetch(
-        "https://n8n-webhooks.bluenacional.com/webhook/45404344-29a6-4b8f-84ab-bdc3ca8c9281",
+        "https://n8n-webhooks.bluenacional.com/webhook/nb1/api/user/create",
         {
           method: "POST",
           headers: {

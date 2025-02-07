@@ -96,7 +96,18 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   })
 
   const updateFormData = (newData: Partial<FormData>) => {
-    setFormData((prev) => ({ ...prev, ...newData }))
+    setFormData((prev) => ({
+      ...prev,
+      ...newData,
+      residentialAddress: {
+        ...prev.residentialAddress,
+        ...newData.residentialAddress,
+      },
+      bankingInfo: {
+        ...prev.bankingInfo,
+        ...newData.bankingInfo,
+      },
+    }))
   }
 
   const t = (key: string) => {
