@@ -3,6 +3,10 @@
 import { createContext, useContext, useState, type ReactNode } from "react"
 import { translations, type Language } from "../translations"
 
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P]
+}
+
 type FormData = {
   // Basic Information
   name: string
@@ -49,7 +53,7 @@ type FormData = {
 
 type FormContextType = {
   formData: FormData
-  updateFormData: (newData: Partial<FormData>) => void
+  updateFormData: (newData: DeepPartial<FormData>) => void
   t: (key: string) => string
 }
 
@@ -95,7 +99,7 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     seriesGenres: [],
   })
 
-  const updateFormData = (newData: Partial<FormData>) => {
+  const updateFormData = (newData: DeepPartial<FormData>) => {
     setFormData((prev) => ({
       ...prev,
       ...newData,
@@ -107,7 +111,10 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ...prev.bankingInfo,
         ...newData.bankingInfo,
       },
-    }))
+      hobbies: newData.hobbies !== undefined ? newData.hobbies : prev.hobbies,
+      movieGenres: newData.movieGenres !== undefined ? newData.movieGenres : prev.movieGenres,
+      seriesGenres: newData.seriesGenres !== undefined ? newData.seriesGenres : prev.seriesGenres,
+    } as FormData));
   }
 
   const t = (key: string) => {

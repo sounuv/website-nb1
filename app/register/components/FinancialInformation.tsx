@@ -71,9 +71,9 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
         <div>
           <Label htmlFor="bankName">{t("financial.bankingInfo.bankName")}</Label>
           <Select
-            value={formData.bankName}
+            value={formData.bankingInfo.bankName}
             onValueChange={(value) => {
-              updateFormData({ bankName: value })
+              updateFormData({ bankingInfo: { bankName: value } })
               if (value === "other") {
                 setCustomBank("")
               }
@@ -96,7 +96,7 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
           </Select>
         </div>
 
-        {formData.bankName === "other" && (
+        {formData.bankingInfo.bankName === "other" && (
           <div>
             <Label htmlFor="customBank">{t("financial.bankingInfo.otherBankName")}</Label>
             <Input
@@ -115,14 +115,18 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
               id="branch"
               placeholder={t("financial.bankingInfo.branchPlaceholder")}
               className="h-12 bg-[#1a1f36] border-[#2e3650] text-white"
-              value={formData.branch || ""}
+              value={formData.bankingInfo.branch || ""}
               onChange={(e) => {
                 const value = e.target.value
                 if (validateBankField("branch", value, selectedCountry)) {
-                  updateFormData({ branch: value })
+                  updateFormData({ bankingInfo: { branch: value } })
                 }
               }}
-              maxLength={BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS]?.branch || undefined}
+              maxLength={
+                'branch' in (BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS] || {})
+                  ? (BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS] as { branch?: number }).branch
+                  : undefined
+              }
             />
           </div>
         )}
@@ -133,15 +137,16 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
             <Input
               id="routingNumber"
               className="h-12 bg-[#1a1f36] border-[#2e3650] text-white"
-              value={formData.routingNumber || ""}
+              value={formData.bankingInfo.routingNumber || ""}
               onChange={(e) => {
                 const value = e.target.value
                 if (validateBankField("routingNumber", value, selectedCountry)) {
-                  updateFormData({ routingNumber: value })
+                  updateFormData({ bankingInfo: { routingNumber: value } })
                 }
               }}
               maxLength={
-                BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS]?.routingNumber || undefined
+                ((BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS] as { routingNumber?: number }).routingNumber) ||
+                undefined
               }
             />
           </div>
@@ -153,14 +158,17 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
             <Input
               id="sortCode"
               className="h-12 bg-[#1a1f36] border-[#2e3650] text-white"
-              value={formData.sortCode || ""}
+              value={formData.bankingInfo.sortCode || ""}
               onChange={(e) => {
                 const value = e.target.value
                 if (validateBankField("sortCode", value, selectedCountry)) {
-                  updateFormData({ sortCode: value })
+                  updateFormData({ bankingInfo: { sortCode: value } })
                 }
               }}
-              maxLength={BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS]?.sortCode || undefined}
+              maxLength={
+                ((BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS] as { sortCode?: number }).sortCode) ||
+                undefined
+              }
             />
           </div>
         )}
@@ -171,14 +179,18 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
             <Input
               id="bsb"
               className="h-12 bg-[#1a1f36] border-[#2e3650] text-white"
-              value={formData.bsb || ""}
+              value={formData.bankingInfo.bsb || ""}
               onChange={(e) => {
                 const value = e.target.value
                 if (validateBankField("bsb", value, selectedCountry)) {
-                  updateFormData({ bsb: value })
+                  updateFormData({ bankingInfo: { bsb: value } })
                 }
               }}
-              maxLength={BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS]?.bsb || undefined}
+              maxLength={
+                'bsb' in (BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS] || {})
+                  ? (BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS] as { bsb?: number }).bsb
+                  : undefined
+              }
             />
           </div>
         )}
@@ -189,14 +201,18 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
             <Input
               id="ifsc"
               className="h-12 bg-[#1a1f36] border-[#2e3650] text-white"
-              value={formData.ifsc || ""}
+              value={formData.bankingInfo.ifsc || ""}
               onChange={(e) => {
                 const value = e.target.value.toUpperCase()
                 if (validateBankField("ifsc", value, selectedCountry)) {
-                  updateFormData({ ifsc: value })
+                  updateFormData({ bankingInfo: { ifsc: value } })
                 }
               }}
-              maxLength={BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS]?.ifsc || undefined}
+              maxLength={
+                selectedCountry in BANK_FIELD_LIMITS
+                  ? (BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS] as { ifsc?: number }).ifsc || undefined
+                  : undefined
+              }
             />
           </div>
         )}
@@ -207,11 +223,11 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
             id="accountNumber"
             placeholder={t("financial.bankingInfo.accountNumberPlaceholder")}
             className="h-12 bg-[#1a1f36] border-[#2e3650] text-white"
-            value={formData.accountNumber || ""}
+            value={formData.bankingInfo.accountNumber || ""}
             onChange={(e) => {
               const value = e.target.value
               if (validateBankField("accountNumber", value, selectedCountry)) {
-                updateFormData({ accountNumber: value })
+                updateFormData({ bankingInfo: { accountNumber: value } })
               }
             }}
             maxLength={BANK_FIELD_LIMITS[selectedCountry as keyof typeof BANK_FIELD_LIMITS]?.accountNumber || undefined}
@@ -220,7 +236,10 @@ export function FinancialInformation({ onNext, onPrev }: FinancialInformationPro
 
         <div>
           <Label htmlFor="accountType">{t("financial.bankingInfo.accountType")}</Label>
-          <Select value={formData.accountType} onValueChange={(value) => updateFormData({ accountType: value })}>
+          <Select
+            value={formData.bankingInfo.accountType}
+            onValueChange={(value) => updateFormData({ bankingInfo: { accountType: value } })}
+          >
             <SelectTrigger className="h-12 bg-[#1a1f36] border-[#2e3650] text-white">
               <SelectValue placeholder={t("financial.bankingInfo.accountType")} />
             </SelectTrigger>

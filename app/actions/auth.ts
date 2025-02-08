@@ -37,3 +37,26 @@ export async function login(formData: FormData) {
   }
 }
 
+export async function resetPassword(formData: FormData) {
+  const email = formData.get("email")
+
+  try {
+    const response = await fetch("https://n8n-webhooks.bluenacional.com/webhook/nb1/api/auth/reset-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    })
+
+    if (response.ok) {
+      return { success: true }
+    } else {
+      const data = await response.json()
+      return { success: false, error: data.msg || "Failed to send reset instructions" }
+    }
+  } catch (error) {
+    return { success: false, error: "An error occurred. Please try again later." }
+  }
+}
+
